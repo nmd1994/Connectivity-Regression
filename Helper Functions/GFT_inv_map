@@ -1,0 +1,42 @@
+library('expm')
+library('matrixStats')
+
+#-------------------------------------------------
+#HELPER FUNCTION TO GET FROM GAMMA SPACE TO CORRELATION SPACE (BY ROW)
+#-------------------------------------------------
+GFT_inv_map=function(gamma,tol_val){
+  #TRACK ITERATIONS 
+  iter_number=0
+  
+  #MAKE SURE INPUTS FOLLOW REQUIREMENTS
+  n=0.5*(1+sqrt(1+8*length(gamma)))
+  if(is.vector(gamma)&n==floor(n)){
+    if(tol_val<1&tol_val>0){
+      
+      #GET GAMMA IN AN OFF DIAGONALS, WITH A DIAGONAL OF ZEROS 
+      A=matrix(0,nrow=n,ncol=n) 
+      A[upper.tri(A)]=gamma
+      A=A+t(A)
+      
+      #READ SOME PROPERTIES OF MATRIX 
+      diag_vec=diag(A)
+      diag_ind=which(diag(n)==1,arr.ind=T)
+      
+      
+      #ITERATIVE ALGORITHM TO GET PROPER DIAGONAL VECTOR 
+      dist=sqrt(n)
+      while(dist>sqrt(n)*tol_val){
+        diag_delta=log(diag(expm(A)))
+        diag_vec= diag_vec - diag_delta
+        A[diag_ind]=diag_vec
+        dist=sqrt(sum(diag_delta^(2)))
+        iter_number=iter_number+1
+        
+      }
+      #GET UNIQUE RECIPROCAL CORRELATION MATRIX
+      C=expm(A)
+      C[diag_ind]=1
+    }
+  }else{"Error: Input is of Wrong Format"}
+  return(list(C,iter_number))
+}
