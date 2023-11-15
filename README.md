@@ -1,9 +1,11 @@
 # Connectivity-Regression
 
-# Main Functions
+# Overview
 
-The main analysis can be conducted (for both Real and Simulated Data) with the permutation hypothesis test and the bootstrap based stability selection procedure. R files are commented to show how to load individual data or the data directly used in the analysis shown in the manuscript.  
+The main analysis can be conducted (for both Real and Simulated Data seen in the manuscript) with the permutation hypothesis test and the bootstrap based stability selection procedure. R files are commented to show how to load individual data or the data directly used in the analysis shown in the manuscript.  
 
+# Helper Functions
+Helper functions for our framework should be run before running the main analysis. In particular, the GFT_inv_map function provides a fast algorithm for mapping back to the original space of the observed data. 
 
 # Simulations
 
